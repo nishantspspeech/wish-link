@@ -1,20 +1,24 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Birthday Wish</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Wish</title>
+  <style>
+    body { text-align: center; font-family: sans-serif; margin-top: 100px; background-color: #fff3cd; }
+    h1 { color: #856404; }
+  </style>
 </head>
 <body>
-  <h1 id="wishText">🎂 Loading your wish...</h1>
-
+  <h1 id="greeting">Hello!</h1>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
 
-    fetch(`/get-name/${id}`)
+    fetch(`https://wish-link-backend.onrender.com/get-name/${id}`)
       .then(res => res.json())
       .then(data => {
-        document.getElementById('wishText').innerText = `🎉 Happy Birthday, ${data.name}! 🎂`;
+        document.getElementById("greeting").textContent = `🎉 Happy Wishes, ${data.name}! 🎉`;
       });
   </script>
 </body>
