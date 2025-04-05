@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("https://wish-link-backend.onrender.com/create-wish", {
+      const response = await fetch("https://wish-link.onrender.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
