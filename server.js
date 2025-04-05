@@ -1,30 +1,21 @@
+document.querySelector('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const app = express();
-const PORT = process.env.PORT || 3000;
+  const name = document.querySelector('input').value;
 
-app.use(express.static('public'));
-app.use(express.json());
+  if (!name.trim()) {
+    alert("Please enter a name!");
+    return;
+  }
 
-let dataFile = 'database.json';
-let wishes = fs.existsSync(dataFile) ? JSON.parse(fs.readFileSync(dataFile)) : {};
+  const response = await fetch('https://wish-link.onrender.com', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name })
+  });
 
-app.post('/create-wish', (req, res) => {
-  const name = req.body.name;
-  const id = Math.random().toString(36).substring(2, 8);
-  wishes[id] = name;
-  fs.writeFileSync(dataFile, JSON.stringify(wishes));
-  res.json({ link: `/wish.html?id=${id}` });
-});
+  const data = await response.json();
 
-app.get('/get-name/:id', (req, res) => {
-  const id = req.params.id;
-  const name = wishes[id] || "Friend";
-  res.json({ name });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  // Redirect to the generated link
+  window.location.href = data.link;
 });
