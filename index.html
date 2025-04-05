@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Your Wish</title>
+</head>
+<body>
+  <h2>🎁 Create a Birthday Wish</h2>
+  <input id="nameInput" placeholder="Enter name here" />
+  <button onclick="createWish()">Generate Wish Link</button>
+  <p id="result"></p>
+
+  <script>
+    function createWish() {
+      const name = document.getElementById('nameInput').value;
+      fetch('/create-wish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const fullLink = window.location.origin + data.link;
+        document.getElementById('result').innerHTML = `👉 <a href="${fullLink}" target="_blank">${fullLink}</a>`;
+      });
+    }
+  </script>
+</body>
+</html>

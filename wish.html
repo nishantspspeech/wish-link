@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Birthday Wish</title>
+</head>
+<body>
+  <h1 id="wishText">🎂 Loading your wish...</h1>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    fetch(`/get-name/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('wishText').innerText = `🎉 Happy Birthday, ${data.name}! 🎂`;
+      });
+  </script>
+</body>
+</html>
