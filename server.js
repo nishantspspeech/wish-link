@@ -1,21 +1,37 @@
-document.querySelector('form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  const input = document.querySelector("input");
 
-  const name = document.querySelector('input').value;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  if (!name.trim()) {
-    alert("Please enter a name!");
-    return;
-  }
+    const name = input.value.trim();
 
-  const response = await fetch('https://wish-link.onrender.com', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name })
+    if (!name) {
+      alert("Please enter a name!");
+      return;
+    }
+
+    try {
+      const response = await fetch("https://wish-link-backend.onrender.com/create-wish", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name })
+      });
+
+      const data = await response.json();
+
+      if (data.link) {
+        window.location.href = data.link;
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to connect to the server.");
+    }
   });
-
-  const data = await response.json();
-
-  // Redirect to the generated link
-  window.location.href = data.link;
 });
